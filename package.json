@@ -1,0 +1,67 @@
+{
+  "name": "blog-automation-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Modular blogging automation dashboard driven by Playwright browser automation (ChatGPT web UI + WordPress admin). Runs locally with SQLite — no database server, Redis or Docker needed.",
+  "scripts": {
+    "setup": "tsx scripts/setup.ts",
+    "dev": "next dev",
+    "worker:dev": "tsx watch --clear-screen=false src/worker/index.ts",
+    "dev:all": "concurrently -k -n web,worker -c blue,magenta \"npm:dev\" \"npm:worker:dev\"",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "worker": "tsx src/worker/index.ts",
+    "start:all": "concurrently -k -n web,worker -c blue,magenta \"npm:start\" \"npm:worker\"",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "user:create": "tsx scripts/create-user.ts",
+    "playwright:install": "playwright install chromium",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.3",
+    "bcryptjs": "^3.0.3",
+    "cheerio": "^1.2.0",
+    "clsx": "^2.1.1",
+    "dotenv": "^17.4.2",
+    "jose": "^6.2.12",
+    "lucide-react": "^1.46.0",
+    "marked": "^18.0.13",
+    "next": "~15.5.25",
+    "papaparse": "^5.5.2",
+    "playwright": "^1.63.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "sanitize-html": "^2.17.7",
+    "sharp": "^0.35.4",
+    "tsx": "^4.23.13",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^22.20.3",
+    "@types/papaparse": "^5.5.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@types/sanitize-html": "^2.16.1",
+    "concurrently": "^10.0.5",
+    "prisma": "6.19.3",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~5.9.3",
+    "vitest": "^3.2.7"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "allowScripts": {
+    "@prisma/client@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "esbuild@0.28.2": true,
+    "prisma@6.19.3": true
+  }
+}

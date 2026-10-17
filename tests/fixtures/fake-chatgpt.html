@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fake ChatGPT</title>
+    <style>
+      body { font-family: sans-serif; }
+      [data-message-author-role] { border: 1px solid #ddd; margin: 8px; padding: 8px; }
+    </style>
+  </head>
+  <body>
+    <!-- Simulates the parts of the ChatGPT web UI the automation relies on. -->
+    <nav><button data-testid="accounts-profile-button">Account</button></nav>
+    <main id="thread"></main>
+    <form onsubmit="return false">
+      <div id="prompt-textarea" class="ProseMirror" contenteditable="true"></div>
+      <button data-testid="send-button" type="button">Send</button>
+    </form>
+    <script>
+      const composer = document.getElementById('prompt-textarea');
+      const send = document.querySelector('[data-testid="send-button"]');
+      const thread = document.getElementById('thread');
+      const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      let turn = 0;
+
+      // ProseMirror-like paste handling: plain text lines become paragraphs.
+      composer.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const text = e.clipboardData.getData('text/plain');
+        composer.innerHTML = text.split('\n').map((l) => `<p>${esc(l) || '<br>'}</p>`).join('');
+      });
+
+      function addMessage(role) {
+        const turnEl = document.createElement('article');
+        turnEl.setAttribute('data-testid', `conversation-turn-${++turn}`);
+        const msg = document.createElement('div');
+        msg.setAttribute('data-message-author-role', role);
+        turnEl.appendChild(msg);
+        thread.appendChild(turnEl);
+        return { turnEl, msg };
+      }
+
+      function stream(msg, turnEl, prompt) {
+        const answer = window.__nextAnswer || `## Result\n\nAnswer to: ${prompt.slice(0, 40)}\n\nThis text mentions that an error occurred in 2019 as part of the article.`;
+        window.__nextAnswer = null;
+        const md = document.createElement('div');
+        md.className = 'markdown prose';
+        msg.appendChild(md);
+        send.style.display = 'none';
+        const stop = document.createElement('button');
+        stop.setAttribute('data-testid', 'stop-button');
+        stop.textContent = 'Stop';
+        send.after(stop);
+
+        const fail = window.__failNext;
+        window.__failNext = false;
+        let i = 0;
+        const timer = setInterval(() => {
+          i += 12;
+          const part = answer.slice(0, i);
+          md.innerHTML = part
+            .split('\n\n')
+            .map((b) => (b.startsWith('## ') ? `<h2>${esc(b.slice(3))}</h2>` : `<p>${esc(b)}</p>`))
+            .join('');
+          if (fail && i > 20) {
+            clearInterval(timer);
+            stop.remove();
+            send.style.display = '';
+            md.remove();
+            const err = document.createElement('div');
+            err.className = 'text-token-text-error';
+            err.textContent = 'Something went wrong while generating the response.';
+            const regen = document.createElement('button');
+            regen.textContent = 'Regenerate';
+            regen.onclick = () => {
+              err.remove();
+              regen.remove();
+              stream(msg, turnEl, prompt);
+            };
+            turnEl.appendChild(err);
+            turnEl.appendChild(regen);
+            return;
+          }
+          if (i >= answer.length) {
+            clearInterval(timer);
+            // A small pause with no stop button mid-stream would fool naive detectors; we finish cleanly.
+            setTimeout(() => {
+              stop.remove();
+              send.style.display = '';
+            }, 150);
+          }
+        }, 40);
+      }
+
+      send.addEventListener('click', () => {
+        const text = composer.innerText.trim();
+        if (!text) return;
+        composer.innerHTML = '';
+        const user = addMessage('user');
+        user.msg.innerHTML = `<div class="whitespace-pre-wrap">${esc(text)}</div>`;
+        if (!location.pathname.startsWith('/c/')) history.replaceState(null, '', '/c/test-conversation-1');
+        const assistant = addMessage('assistant');
+        stream(assistant.msg, assistant.turnEl, text);
+      });
+    </script>
+  </body>
+</html>

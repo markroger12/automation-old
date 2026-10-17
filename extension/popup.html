@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Blog Automation Studio</title>
+    <style>
+      :root {
+        --bg: #ffffff;
+        --fg: #0f172a;
+        --muted: #64748b;
+        --line: #e2e8f0;
+        --accent: #107a57;
+        --accent-fg: #ffffff;
+        --warn-bg: #fef3c7;
+        --warn-fg: #92400e;
+        --err-bg: #fee2e2;
+        --err-fg: #991b1b;
+        --ok-bg: #dcfce7;
+        --ok-fg: #166534;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f172a;
+          --fg: #e2e8f0;
+          --muted: #94a3b8;
+          --line: #1e293b;
+          --accent: #34d399;
+          --accent-fg: #052e1f;
+          --warn-bg: #422006;
+          --warn-fg: #fcd34d;
+          --err-bg: #450a0a;
+          --err-fg: #fca5a5;
+          --ok-bg: #052e16;
+          --ok-fg: #86efac;
+        }
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; width: 360px; background: var(--bg); color: var(--fg); font: 13px/1.45 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+      header { display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+      header img { width: 28px; height: 28px; }
+      header h1 { margin: 0; font-size: 14px; }
+      header p { margin: 0; color: var(--muted); font-size: 12px; }
+      section { padding: 12px 14px; border-bottom: 1px solid var(--line); }
+      label { display: block; font-weight: 600; font-size: 12px; margin: 8px 0 4px; }
+      label:first-child { margin-top: 0; }
+      input, select { width: 100%; padding: 7px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); font: inherit; }
+      .row { display: flex; gap: 8px; margin-top: 10px; }
+      button { flex: 1; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); font: inherit; font-weight: 600; cursor: pointer; }
+      button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+      button:disabled { opacity: 0.6; cursor: default; }
+      .msg { margin-top: 10px; padding: 7px 9px; border-radius: 6px; display: none; }
+      .msg.show { display: block; }
+      .msg.ok { background: var(--ok-bg); color: var(--ok-fg); }
+      .msg.err { background: var(--err-bg); color: var(--err-fg); }
+      .hint { color: var(--muted); font-size: 12px; margin: 6px 0 0; }
+      ul { list-style: none; margin: 0; padding: 0; }
+      li { padding: 7px 0; border-top: 1px solid var(--line); cursor: pointer; }
+      li:first-child { border-top: 0; }
+      .state { display: inline-block; min-width: 64px; padding: 1px 6px; border-radius: 999px; font-size: 11px; font-weight: 700; text-align: center; margin-right: 6px; background: var(--line); }
+      .state.working { background: var(--ok-bg); color: var(--ok-fg); }
+      .state.attention, .state.login { background: var(--warn-bg); color: var(--warn-fg); }
+      .state.error { background: var(--err-bg); color: var(--err-fg); }
+      .detail { color: var(--muted); display: block; margin-top: 2px; word-break: break-word; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="icon48.png" alt="" />
+      <div>
+        <h1>ChatGPT Worker</h1>
+        <p id="summary">Blog Automation Studio</p>
+      </div>
+    </header>
+
+    <section>
+      <label for="appUrl">App address</label>
+      <input id="appUrl" placeholder="http://localhost:3000" />
+      <label for="key">Connection key</label>
+      <input id="key" type="password" autocomplete="off" placeholder="Paste the key from the app's Settings page" />
+      <p class="hint" id="keyHint"></p>
+      <div class="row"><button id="save">Save &amp; test</button></div>
+      <div class="msg" id="saveMsg"></div>
+    </section>
+
+    <section>
+      <label>Automatic start</label>
+      <p class="hint" id="autoText">ChatGPT tabs open by themselves for queued articles (up to Task Concurrency) and close when an article's ChatGPT part is done.</p>
+      <div class="row">
+        <button class="primary" id="toggle">Pause automatic start</button>
+        <button id="openNow">Open ChatGPT tabs now</button>
+      </div>
+      <label for="layout">Where the ChatGPT tabs open</label>
+      <select id="layout">
+        <option value="tabs">All in one window (tabs)</option>
+        <option value="windows">Separate windows side by side</option>
+      </select>
+      <p class="hint">Keep the ChatGPT window open and not minimized; the extension switches between its tabs by itself. If ChatGPT asks you to log in or to verify you are human, do it in that window — the article continues by itself.</p>
+      <div class="msg" id="runMsg"></div>
+    </section>
+
+    <section>
+      <ul id="workers"></ul>
+    </section>
+
+    <section>
+      <div class="row"><button id="reload" title="Use after the extension files were updated">Reload extension (after an update)</button></div>
+      <p class="hint">After a reload the ChatGPT tabs open again by themselves within 30 seconds when articles are waiting.</p>
+    </section>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

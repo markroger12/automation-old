@@ -1,0 +1,182 @@
+// WordPress admin, block editor (Gutenberg), classic editor and Rank Math selectors.
+// Text and aria-label selectors list the English and the German admin wording (e.g. promizeiten.de).
+// Override/extend through Settings → selectorOverrides.wordpress / selectorOverrides.rankmath.
+
+export const WP_SELECTORS = {
+  loginForm: ['#loginform', 'form[name="loginform"]', '#user_login'],
+  adminChrome: ['#wpadminbar', '#adminmenu', '.edit-post-header', '.editor-header'],
+  postsListReady: ['.wp-list-table', '.page-title-action', '.wrap h1'],
+  addNewPost: ['a.page-title-action[href*="post-new.php"]', '.wrap a[href*="post-new.php"]'],
+
+  // Block editor
+  gutenbergRoot: ['.block-editor', '.edit-post-layout', '.editor-editor-interface', '.block-editor__container'],
+  canvasIframe: ['iframe[name="editor-canvas"]'],
+  titleInput: [
+    '.editor-post-title__input',
+    'h1.wp-block-post-title',
+    '[aria-label="Add title"]',
+    '[aria-label="Titel hinzufügen"]',
+    'textarea.editor-post-title__input',
+  ],
+  defaultAppender: [
+    '.block-editor-default-block-appender__content',
+    'p[data-empty="true"]',
+    '[aria-label="Add default block"]',
+    '[aria-label="Standard-Block hinzufügen"]',
+    'p.block-editor-rich-text__editable[role="document"]',
+  ],
+  blocks: ['.block-editor-block-list__layout [data-block]'],
+  settingsToggle: [
+    '.editor-header__settings button[aria-label="Settings"]',
+    '.edit-post-header__settings button[aria-label="Settings"]',
+    '.editor-header__settings button[aria-label="Einstellungen"]',
+    'button[aria-label="Settings"][aria-controls]',
+    'button[aria-label="Einstellungen"][aria-controls]',
+    'button[aria-label="Settings"]',
+  ],
+  sidebar: ['.editor-sidebar', '.edit-post-sidebar', '.interface-complementary-area'],
+  postTab: [
+    '[role="tab"][data-tab-id="edit-post/document"]',
+    '[role="tab"]#tabs-0-edit-post\\/document',
+    'button[role="tab"]:text-is("Post")',
+    'button.edit-post-sidebar__panel-tab:has-text("Post")',
+    'button[role="tab"]:text-is("Beitrag")',
+  ],
+  panelBody: ['.components-panel__body'],
+  categorySearch: [
+    '.editor-post-taxonomies__hierarchical-terms-filter input',
+    '.editor-post-taxonomies__hierarchical-terms-filter',
+  ],
+  addNewCategoryToggle: ['button.editor-post-taxonomies__hierarchical-terms-add'],
+  addNewCategoryInput: ['.editor-post-taxonomies__hierarchical-terms-input input', 'input.editor-post-taxonomies__hierarchical-terms-input'],
+  addNewCategorySubmit: ['button.editor-post-taxonomies__hierarchical-terms-submit'],
+  tokenInput: ['.components-form-token-field__input'],
+  tokenText: ['.components-form-token-field__token-text'],
+  tokenSuggestion: ['.components-form-token-field__suggestion'],
+  saveDraft: [
+    'button.editor-post-save-draft',
+    '.editor-header__settings button:text-is("Save draft")',
+    '.editor-header__settings button:text-is("Entwurf speichern")',
+    'button:text-is("Save draft")',
+    'button:text-is("Entwurf speichern")',
+  ],
+  savedIndicator: [
+    '.editor-post-saved-state.is-saved',
+    'button.editor-post-save-draft.is-saved',
+    '.components-snackbar:has-text("Draft saved")',
+    '.components-snackbar:has-text("Entwurf gespeichert")',
+  ],
+  codeEditorTextarea: ['textarea.editor-post-text-editor', '.editor-post-text-editor'],
+  exitCodeEditor: ['button:has-text("Exit code editor")', 'button:has-text("Code-Editor verlassen")'],
+  optionsMenu: [
+    '.editor-header__settings button[aria-label="Options"]',
+    '.editor-header__settings button[aria-label="Optionen"]',
+    '.edit-post-header__settings button[aria-label="Options"]',
+    'button[aria-label="Options"]',
+    'button[aria-label="Optionen"]',
+  ],
+  welcomeGuideClose: [
+    '.edit-post-welcome-guide button[aria-label="Close"]',
+    '.editor-welcome-guide button[aria-label="Close"]',
+    '.components-guide button[aria-label="Close"]',
+    '.edit-post-welcome-guide button[aria-label="Schließen"]',
+    '.editor-welcome-guide button[aria-label="Schließen"]',
+    '.components-guide button[aria-label="Schließen"]',
+  ],
+  patternModalClose: [
+    '.editor-post-template__swap-template-modal button[aria-label="Close"]',
+    '.edit-post-start-page-options__modal button[aria-label="Close"]',
+    '.editor-start-page-options__modal button[aria-label="Close"]',
+    '.editor-post-template__swap-template-modal button[aria-label="Schließen"]',
+    '.editor-start-page-options__modal button[aria-label="Schließen"]',
+  ],
+  urlPanelToggle: [
+    '.editor-post-url__panel-dropdown button',
+    'button.editor-post-url__panel-toggle',
+    '.edit-post-post-url__dropdown button',
+  ],
+  slugInput: [
+    '.editor-post-url input.components-input-control__input',
+    '.editor-post-url__input input',
+    'input.editor-post-url__input',
+    '.editor-post-url input[type="text"]',
+    'input.editor-post-slug__input',
+    '.edit-post-post-link__link-post-name input',
+    'input.editor-post-slug',
+  ],
+  postStatusPublished: [
+    '.editor-post-publish-button__button:has-text("Update")',
+    'button.editor-post-publish-button:has-text("Update")',
+    '.editor-post-publish-button__button:has-text("Aktualisieren")',
+  ],
+
+  // Classic editor
+  classicRoot: ['#post #titlediv', '#postdivrich', 'form#post #title'],
+  classicTitle: ['#title'],
+  classicTextTab: ['#content-html'],
+  classicContent: ['textarea#content'],
+  classicCategoryChecklist: ['#categorychecklist'],
+  classicCategoryAddToggle: ['#category-add-toggle'],
+  classicCategoryNewInput: ['#newcategory'],
+  classicCategoryAddSubmit: ['#category-add-submit'],
+  classicTagInput: ['#new-tag-post_tag'],
+  classicTagAdd: ['#post_tag .tagadd', 'input.tagadd'],
+  classicTagList: ['#post_tag .tagchecklist li', '.tagchecklist li'],
+  classicSlugEdit: ['#edit-slug-buttons button.edit-slug', '#edit-slug-buttons .edit-slug'],
+  classicSlugInput: ['#new-post-slug'],
+  classicSlugSave: ['#edit-slug-buttons button.save'],
+  classicSlugMetabox: ['#post_name'],
+  classicSaveDraft: ['#save-post'],
+  classicNotice: ['#message.updated', '#message.notice-success', '.notice-success'],
+  classicPostStatus: ['#post-status-display'],
+};
+
+export const RANKMATH_SELECTORS = {
+  toolbarButton: [
+    '.rank-math-toolbar-score',
+    'button[aria-label="Rank Math"]',
+    'button[aria-label="Rank Math SEO"]',
+    '.interface-pinned-items button:has(.rank-math-icon)',
+  ],
+  panel: ['.rank-math-sidebar-panel', '#rank-math-editor', '#rank_math_metabox .rank-math-tabs', '#rank_math_metabox'],
+  generalTab: [
+    '.rank-math-tabs button:has-text("General")',
+    '[role="tab"]:has-text("General")',
+    '.rank-math-tabs button:has-text("Allgemein")',
+    '[role="tab"]:has-text("Allgemein")',
+  ],
+  focusKeywordInput: [
+    '.rank-math-focus-keyword .tagify__input',
+    '.rank-math-focus-keyword input',
+    '#rank-math-focus-keyword .tagify__input',
+  ],
+  focusKeywordTag: ['.rank-math-focus-keyword .tagify__tag', '.rank-math-focus-keyword tag'],
+  editSnippetButton: ['.rank-math-edit-snippet', 'button:has-text("Edit Snippet")', 'button:has-text("Snippet bearbeiten")'],
+  snippetModal: [
+    '.rank-math-modal',
+    '.components-modal__frame.rank-math-modal',
+    '.components-modal__frame:has-text("Preview Snippet Editor")',
+    '.components-modal__frame:has-text("Snippet-Editor")',
+  ],
+  snippetTitle: ['#rank-math-editor-title', '.rank-math-editor-general [id*="editor-title"]', 'input[name="rank_math_title"]'],
+  snippetDescription: [
+    '#rank-math-editor-description',
+    '.rank-math-editor-general [id*="editor-description"]',
+    'textarea[name="rank_math_description"]',
+  ],
+  snippetPermalink: ['#rank-math-editor-permalink', '.rank-math-editor-general [id*="editor-permalink"]'],
+  modalClose: [
+    '.components-modal__header button[aria-label="Close"]',
+    '.components-modal__header button[aria-label="Schließen"]',
+    'button[aria-label="Close dialog"]',
+    'button[aria-label="Dialog schließen"]',
+    'button[aria-label="Close"]',
+    'button[aria-label="Schließen"]',
+  ],
+  score: ['.rank-math-toolbar-score .score-text', '.rank-math-seo-score .score-text', '.rank-math-toolbar-score', '.seo-score .score-text'],
+  checklistItem: ['.rank-math-checklist li', 'ul.rank-math-checklist li', '.rank-math-sidebar-panel li[class*="test-"]'],
+  panelBodies: ['.rank-math-sidebar-panel .components-panel__body', '#rank_math_metabox .components-panel__body'],
+};
+
+export type WpSelectors = typeof WP_SELECTORS;
+export type RankMathSelectors = typeof RANKMATH_SELECTORS;
